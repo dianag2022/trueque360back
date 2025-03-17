@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend para el marketplace con NestJS y Supabase",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "build": "nest build",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.5",
+    "@nestjs/config": "^4.0.1",
+    "@nestjs/core": "^11.0.5",
+    "@nestjs/platform-express": "^11.0.5",
+    "@supabase/supabase-js": "^2.49.1",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.5",
+    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^11.0.5",
+    "eslint": "^8.54.0",
+    "prettier": "^3.2.5",
+    "ts-loader": "^9.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}
