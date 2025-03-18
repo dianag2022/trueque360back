@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000', 
-      'https://trueque360-gkkq8c5cc-dianag2022s-projects.vercel.app/' // Reemplaza con tu URL real
+      'https://trueque360.vercel.app' // Reemplaza con tu URL real
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
