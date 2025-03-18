@@ -83,6 +83,13 @@ var AuthController = /** @class */ (function () {
             });
         });
     };
+    AuthController.prototype.resetPassword = function (email) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.authService.resetPassword(email)];
+            });
+        });
+    };
     __decorate([
         (0, common_1.Post)('signup'),
         __param(0, (0, common_1.Body)('email')),
@@ -112,6 +119,13 @@ var AuthController = /** @class */ (function () {
         __metadata("design:paramtypes", []),
         __metadata("design:returntype", Promise)
     ], AuthController.prototype, "signOut", null);
+    __decorate([
+        (0, common_1.Post)('reset-password'),
+        __param(0, (0, common_1.Body)('email')),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String]),
+        __metadata("design:returntype", Promise)
+    ], AuthController.prototype, "resetPassword", null);
     AuthController = __decorate([
         (0, common_1.Controller)('auth'),
         __metadata("design:paramtypes", [auth_service_1.AuthService])

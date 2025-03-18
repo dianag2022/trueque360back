@@ -29,7 +29,10 @@ export class AuthService {
     if (error) {
       throw new Error(`Error signing in: ${error.message}`);
     }
-    return data;
+    return {
+      access_token: data.session.access_token,  // ← Devuelve el token al frontend
+      user: data.user
+    };
   }
 
   async getUser() {
@@ -47,4 +50,24 @@ export class AuthService {
     }
     return { message: 'Signed out successfully' };
   }
+
+  async validateToken(token: string) {
+    const { data, error } = await this.supabase.auth.getUser(token);
+    return { data, error };
+  }
+
+  async resetPassword(email: string) {
+    const supabase = this.supabaseService.getClient();
+  
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    
+    if (error) {
+      throw new Error(`Error enviando el correo de recuperación: ${error.message}`);
+    }
+  
+    return { message: 'Correo de recuperación enviado', data };
+  }
+  
+  
+  
 }

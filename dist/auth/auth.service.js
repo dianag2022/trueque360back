@@ -86,7 +86,10 @@ var AuthService = /** @class */ (function () {
                         if (error) {
                             throw new Error("Error signing in: ".concat(error.message));
                         }
-                        return [2 /*return*/, data];
+                        return [2 /*return*/, {
+                                access_token: data.session.access_token, // ← Devuelve el token al frontend
+                                user: data.user
+                            }];
                 }
             });
         });
@@ -119,6 +122,37 @@ var AuthService = /** @class */ (function () {
                             throw new Error("Error signing out: ".concat(error.message));
                         }
                         return [2 /*return*/, { message: 'Signed out successfully' }];
+                }
+            });
+        });
+    };
+    AuthService.prototype.validateToken = function (token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, data, error;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.supabase.auth.getUser(token)];
+                    case 1:
+                        _a = _b.sent(), data = _a.data, error = _a.error;
+                        return [2 /*return*/, { data: data, error: error }];
+                }
+            });
+        });
+    };
+    AuthService.prototype.resetPassword = function (email) {
+        return __awaiter(this, void 0, void 0, function () {
+            var supabase, _a, data, error;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        supabase = this.supabaseService.getClient();
+                        return [4 /*yield*/, supabase.auth.resetPasswordForEmail(email)];
+                    case 1:
+                        _a = _b.sent(), data = _a.data, error = _a.error;
+                        if (error) {
+                            throw new Error("Error enviando el correo de recuperaci\u00F3n: ".concat(error.message));
+                        }
+                        return [2 /*return*/, { message: 'Correo de recuperación enviado', data: data }];
                 }
             });
         });

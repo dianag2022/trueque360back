@@ -51,9 +51,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
 var common_1 = require("@nestjs/common");
 var products_service_1 = require("./products.service");
+var auth_service_1 = require("../auth/auth.service");
 var ProductsController = /** @class */ (function () {
-    function ProductsController(productsService) {
+    function ProductsController(productsService, authService) {
         this.productsService = productsService;
+        this.authService = authService;
     }
     ProductsController.prototype.getAllProducts = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -69,10 +71,22 @@ var ProductsController = /** @class */ (function () {
             });
         });
     };
-    ProductsController.prototype.addProduct = function (product) {
+    ProductsController.prototype.addProduct = function (product, authHeader) {
         return __awaiter(this, void 0, void 0, function () {
+            var token, user;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.productsService.addProduct(product)];
+                switch (_a.label) {
+                    case 0:
+                        token = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(' ')[1];
+                        if (!token)
+                            throw new common_1.UnauthorizedException('Token missing');
+                        return [4 /*yield*/, this.authService.validateToken(token)];
+                    case 1:
+                        user = _a.sent();
+                        if (!user)
+                            throw new common_1.UnauthorizedException('Invalid token');
+                        return [2 /*return*/, this.productsService.addProduct(product)];
+                }
             });
         });
     };
@@ -92,13 +106,15 @@ var ProductsController = /** @class */ (function () {
     __decorate([
         (0, common_1.Post)(),
         __param(0, (0, common_1.Body)()),
+        __param(1, (0, common_1.Headers)('Authorization')),
         __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object]),
+        __metadata("design:paramtypes", [Object, String]),
         __metadata("design:returntype", Promise)
     ], ProductsController.prototype, "addProduct", null);
     ProductsController = __decorate([
         (0, common_1.Controller)('products'),
-        __metadata("design:paramtypes", [products_service_1.ProductsService])
+        __metadata("design:paramtypes", [products_service_1.ProductsService,
+            auth_service_1.AuthService])
     ], ProductsController);
     return ProductsController;
 }());

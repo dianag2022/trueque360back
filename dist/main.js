@@ -46,9 +46,11 @@ function bootstrap() {
                 case 0: return [4 /*yield*/, core_1.NestFactory.create(app_module_1.AppModule)];
                 case 1:
                     app = _a.sent();
-                    // Habilitar CORS
                     app.enableCors({
-                        origin: 'http://localhost:3000', // Permite peticiones desde el frontend
+                        origin: [
+                            'http://localhost:3000',
+                            'https://trueque360.vercel.app' // Reemplaza con tu URL real
+                        ],
                         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
                         allowedHeaders: 'Content-Type, Authorization',
                     });
