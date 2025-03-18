@@ -58,7 +58,7 @@ export class AuthService {
 
   async resetPassword(email: string) {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https:localhost:3000/reset-password', // Ajusta la URL donde recibes el token
+      redirectTo: 'http://localhost:3000/reset-password', // Ajusta la URL donde recibes el token
     });
     if (error) throw new BadRequestException(error.message);
     return { message: 'Correo de recuperación enviado', data };
