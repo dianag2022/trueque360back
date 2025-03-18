@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Req } from '@nestjs/common';
+import { Controller, Post, Body, Get, Req, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -25,9 +25,20 @@ export class AuthController {
     return this.authService.signOut();
   }
 
+  // Enviar el correo de recuperación
   @Post('reset-password')
   async resetPassword(@Body('email') email: string) {
     return this.authService.resetPassword(email);
   }
 
+  @Post('update-password')
+  async updatePassword(
+    @Body('token') token: string,
+    @Body('newPassword') newPassword: string
+  ) {
+    if (!token || !newPassword) {
+      throw new BadRequestException('Token y nueva contraseña son requeridos');
+    }
+    return this.authService.updatePassword(token, newPassword);
+  }
 }

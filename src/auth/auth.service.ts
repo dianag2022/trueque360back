@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from '../supabase/supabase.service';
 
@@ -57,15 +57,25 @@ export class AuthService {
   }
 
   async resetPassword(email: string) {
-    const supabase = this.supabaseService.getClient();
-  
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
-    
-    if (error) {
-      throw new Error(`Error enviando el correo de recuperación: ${error.message}`);
-    }
-  
+    const { data, error } = await this.supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https:localhost:3000/reset-password', // Ajusta la URL donde recibes el token
+    });
+    if (error) throw new BadRequestException(error.message);
     return { message: 'Correo de recuperación enviado', data };
+  }
+
+  async updatePassword(token: string, newPassword: string) {
+    // 1. Validamos el token e iniciamos sesión
+    const { data, error } = await this.supabase.auth.exchangeCodeForSession(token);
+    if (error) throw new BadRequestException('Token inválido o expirado');
+
+    // 2. Actualizamos la contraseña
+    const { error: updateError } = await this.supabase.auth.updateUser({
+      password: newPassword,
+    });
+    if (updateError) throw new BadRequestException(updateError.message);
+
+    return { message: 'Contraseña actualizada exitosamente' };
   }
   
   
